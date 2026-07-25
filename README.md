@@ -1,16 +1,131 @@
-# React + Vite
+# 💰 Expense Tracker
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A modern and responsive Expense Tracker built with **React** that allows users to manage their income and expenses with persistent local storage.
 
-Currently, two official plugins are available:
+![React](https://img.shields.io/badge/React-19-blue?logo=react)
+![Vite](https://img.shields.io/badge/Vite-8-purple?logo=vite)
+![License](https://img.shields.io/badge/License-MIT-green)
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+## ✨ Features
 
-## React Compiler
+- ➕ Add new income and expense transactions
+- ✏️ Edit existing transactions
+- 🗑️ Delete transactions
+- 💰 Automatic balance calculation
+- 📈 Separate income and expense totals
+- 💾 Data persistence using Local Storage
+- ✅ Input validation
+- 📱 Responsive modern UI
+- ⚡ Built with React Hooks
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+---
 
-## Expanding the ESLint configuration
+## 🛠️ Built With
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+- React 19
+- Vite
+- JavaScript (ES6+)
+- CSS3
+- HTML5
+
+---
+
+## 📚 React Concepts Used
+
+This project was built to practice core React fundamentals including:
+
+- `useState`
+- `useEffect`
+- Controlled Components
+- Conditional Rendering
+- Event Handling
+- Lists & Keys
+- State Management
+- CRUD Operations
+- Local Storage Persistence
+
+---
+
+## 🚀 Installation
+
+Clone the repository
+
+```bash
+git clone https://github.com/yourusername/expense-tracker.git
+```
+
+Navigate to the project
+
+```bash
+cd expense-tracker
+```
+
+Install dependencies
+
+```bash
+npm install
+```
+
+Start the development server
+
+```bash
+npm run dev
+```
+
+---
+
+## 📂 Project Structure
+
+```
+expense-tracker/
+│
+├── src/
+│   ├── App.jsx
+│   ├── App.css
+│   ├── main.jsx
+│   └── assets/
+│
+├── public/
+├── package.json
+└── README.md
+```
+
+---
+
+## 📖 How It Works
+
+- Users can add transactions by entering a description and amount.
+- Positive amounts are treated as **Income**.
+- Negative amounts are treated as **Expenses**.
+- The application automatically calculates:
+  - Total Income
+  - Total Expenses
+  - Current Balance
+- All transactions are saved in the browser's **Local Storage**, so data remains available after refreshing the page.
+
+---
+
+## 🎯 Future Improvements
+
+- 🔍 Search transactions
+- 🏷️ Categories
+- 📅 Date support
+- 📊 Charts & Analytics
+- 🌙 Dark / Light Theme
+- 📄 Export to CSV
+- 🔐 User Authentication
+- ☁️ Cloud Database (Firebase)
+
+---
+
+## 👨‍💻 Author
+
+**Ishan Biyani**
+
+GitHub: https://github.com/yourusername
+
+---
+
+## 📜 License
+
+This project is licensed under the MIT License.

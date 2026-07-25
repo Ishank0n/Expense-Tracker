@@ -1,0 +1,388 @@
+/* =============================================================
+   EXPENSE TRACKER — "Aurora Glass" theme
+   Same design language as the task manager: soft mesh-gradient
+   backdrop, frosted glass panels, Sora + Inter type pairing.
+   ============================================================= */
+
+@import url('https://fonts.googleapis.com/css2?family=Sora:wght@400;500;600;700&family=Inter:wght@400;500;600;700&display=swap');
+
+:root {
+  --bg-base:   #F6F7FC;
+  --ink:       #1E2233;
+  --ink-muted: rgba(30, 34, 51, 0.56);
+  --ink-faint: rgba(30, 34, 51, 0.36);
+
+  --glass-panel:  rgba(255, 255, 255, 0.45);
+  --glass-card:   rgba(255, 255, 255, 0.72);
+  --glass-border: rgba(255, 255, 255, 0.65);
+  --glass-shadow: rgba(31, 41, 71, 0.10);
+
+  --input-bg:     rgba(255, 255, 255, 0.7);
+  --input-border: rgba(30, 34, 51, 0.12);
+
+  --violet:      #7C6FEA;
+  --violet-deep: #5F4FDB;
+  --sky:         #4FA8E0;
+  --rose:        #EF6280;
+  --rose-bg:     rgba(239, 98, 128, 0.14);
+  --mint:        #2AAE8A;
+  --mint-bg:     rgba(42, 174, 138, 0.15);
+  --violet-bg:   rgba(124, 111, 234, 0.14);
+
+  --mesh-violet: rgba(124, 111, 234, 0.28);
+  --mesh-sky:    rgba(79, 168, 224, 0.24);
+  --mesh-rose:   rgba(239, 98, 128, 0.18);
+  --mesh-mint:   rgba(42, 174, 138, 0.18);
+
+  --scrollbar-thumb: rgba(124, 111, 234, 0.28);
+
+  --toggle-bg:     rgba(255, 255, 255, 0.5);
+  --toggle-border: rgba(255, 255, 255, 0.7);
+
+  --radius-lg: 24px;
+  --radius-md: 16px;
+  --radius-sm: 11px;
+  --ease: cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+/* ---------------------------- dark theme overrides ---------------------------- */
+
+:root[data-theme="dark"] {
+  --bg-base:   #0C0E1C;
+  --ink:       #ECEEFB;
+  --ink-muted: rgba(236, 238, 251, 0.60);
+  --ink-faint: rgba(236, 238, 251, 0.38);
+
+  --glass-panel:  rgba(255, 255, 255, 0.055);
+  --glass-card:   rgba(255, 255, 255, 0.085);
+  --glass-border: rgba(255, 255, 255, 0.14);
+  --glass-shadow: rgba(0, 0, 0, 0.45);
+
+  --input-bg:     rgba(255, 255, 255, 0.06);
+  --input-border: rgba(255, 255, 255, 0.16);
+
+  --violet:      #9C90F5;
+  --violet-deep: #7A6EF0;
+  --sky:         #74C1F0;
+  --rose:        #F385A0;
+  --rose-bg:     rgba(243, 133, 160, 0.20);
+  --mint:        #55D2AB;
+  --mint-bg:     rgba(85, 210, 171, 0.18);
+  --violet-bg:   rgba(156, 144, 245, 0.20);
+
+  --mesh-violet: rgba(140, 120, 255, 0.35);
+  --mesh-sky:    rgba(90, 180, 240, 0.28);
+  --mesh-rose:   rgba(240, 110, 150, 0.22);
+  --mesh-mint:   rgba(60, 200, 160, 0.20);
+
+  --scrollbar-thumb: rgba(156, 144, 245, 0.35);
+
+  --toggle-bg:     rgba(255, 255, 255, 0.08);
+  --toggle-border: rgba(255, 255, 255, 0.16);
+}
+
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  font-family: 'Inter', sans-serif;
+  color: var(--ink);
+  background: var(--bg-base);
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  padding: 56px 20px;
+  position: relative;
+  overflow-x: hidden;
+  transition: background-color 0.4s var(--ease), color 0.4s var(--ease);
+}
+
+/* soft drifting aurora mesh behind everything */
+body::before {
+  content: '';
+  position: fixed;
+  inset: -10%;
+  z-index: 0;
+  pointer-events: none;
+  background:
+    radial-gradient(38% 30% at 12% 12%, var(--mesh-violet), transparent 70%),
+    radial-gradient(34% 28% at 88% 8%,  var(--mesh-sky),    transparent 70%),
+    radial-gradient(40% 34% at 82% 88%, var(--mesh-rose),   transparent 70%),
+    radial-gradient(36% 30% at 8% 85%,  var(--mesh-mint),   transparent 70%);
+  filter: blur(10px);
+  animation: drift 26s ease-in-out infinite alternate;
+  transition: background 0.4s var(--ease);
+}
+
+@keyframes drift {
+  from { transform: translate3d(0, 0, 0) scale(1); }
+  to   { transform: translate3d(-1.5%, 1.5%, 0) scale(1.04); }
+}
+
+/* =============================== app shell =============================== */
+
+section {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  max-width: 460px;
+  background: var(--glass-panel);
+  border: 1px solid var(--glass-border);
+  border-radius: var(--radius-lg);
+  padding: 32px 28px;
+  backdrop-filter: blur(24px) saturate(140%);
+  -webkit-backdrop-filter: blur(24px) saturate(140%);
+  box-shadow: 0 24px 60px var(--glass-shadow);
+  transition: background 0.4s var(--ease), border-color 0.4s var(--ease), box-shadow 0.4s var(--ease);
+}
+
+/* ---------------------------- theme toggle ---------------------------- */
+
+.theme-toggle {
+  position: fixed;
+  top: 28px;
+  right: 32px;
+  z-index: 60;
+  width: 44px;
+  height: 44px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.1rem;
+  background: var(--toggle-bg);
+  border: 1px solid var(--toggle-border);
+  border-radius: 50%;
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  cursor: pointer;
+  transition: background 0.3s var(--ease), border-color 0.3s var(--ease), transform 0.2s var(--ease);
+}
+.theme-toggle:hover { transform: translateY(-2px) scale(1.05); }
+
+@media (max-width: 520px) {
+  .theme-toggle { top: 16px; right: 16px; }
+}
+
+/* ---------------------------- header ---------------------------- */
+
+.header {
+  text-align: center;
+  margin-bottom: 26px;
+}
+
+.title {
+  font-family: 'Sora', sans-serif;
+  font-weight: 600;
+  font-size: clamp(1.5rem, 3vw, 1.9rem);
+  letter-spacing: -0.01em;
+  margin: 0 0 20px;
+  background: linear-gradient(100deg, var(--violet-deep), var(--sky) 55%, var(--rose));
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  display: inline-block;
+}
+
+.balance {
+  font-family: 'Inter', sans-serif;
+  font-weight: 600;
+  font-size: 0.72rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--ink-faint);
+  margin: 0 0 6px;
+}
+
+.amount {
+  font-family: 'Sora', sans-serif;
+  font-weight: 700;
+  font-size: 2.4rem;
+  color: var(--ink);
+  margin: 0;
+}
+
+/* ---------------------------- summary cards ---------------------------- */
+
+.summary {
+  display: flex;
+  gap: 14px;
+  margin: 24px 0;
+}
+
+div.income,
+div.expense {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  background: var(--glass-card);
+  border: 1px solid var(--glass-border);
+  border-radius: var(--radius-md);
+  padding: 14px 16px;
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  transition: transform 0.2s var(--ease);
+}
+div.income  { border-left: 3px solid var(--mint); }
+div.expense { border-left: 3px solid var(--rose); }
+div.income:hover,
+div.expense:hover { transform: translateY(-2px); }
+
+p.income,
+p.expense {
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  margin: 0;
+}
+p.income  { color: var(--mint); }
+p.expense { color: var(--rose); }
+
+.income p:nth-of-type(2),
+.expense p:nth-of-type(2) {
+  font-family: 'Sora', sans-serif;
+  font-size: 1.15rem;
+  font-weight: 700;
+  color: var(--ink);
+  margin: 0;
+}
+
+/* ---------------------------- new transaction form ---------------------------- */
+
+.new-transaction {
+  background: var(--glass-card);
+  border: 1px solid var(--glass-border);
+  border-radius: var(--radius-md);
+  padding: 22px 20px;
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+}
+
+.new-transaction h3 {
+  font-family: 'Sora', sans-serif;
+  font-weight: 600;
+  font-size: 1rem;
+  color: var(--ink);
+  margin: 0 0 16px;
+}
+
+.description-input,
+.amount-input {
+  width: 100%;
+  font-family: 'Inter', sans-serif;
+  font-size: 0.9rem;
+  color: var(--ink);
+  background: var(--input-bg);
+  border: 1.5px solid var(--input-border);
+  border-radius: var(--radius-sm);
+  padding: 10px 12px;
+  margin-bottom: 12px;
+  transition: border-color 0.18s var(--ease), box-shadow 0.18s var(--ease);
+}
+
+.description-input::placeholder,
+.amount-input::placeholder { color: var(--ink-faint); }
+
+.description-input:focus,
+.amount-input:focus {
+  outline: none;
+  border-color: var(--violet);
+  box-shadow: 0 0 0 3px var(--violet-bg);
+}
+
+.error {
+  min-height: 1.1em;
+  margin: -4px 0 10px;
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: var(--rose);
+}
+
+.add {
+  width: 100%;
+  border: none;
+  padding: 12px;
+  border-radius: var(--radius-sm);
+  background: linear-gradient(135deg, var(--violet), var(--sky));
+  color: #fff;
+  font-family: 'Inter', sans-serif;
+  font-weight: 600;
+  font-size: 0.9rem;
+  cursor: pointer;
+  box-shadow: 0 8px 20px rgba(124, 111, 234, 0.35);
+  transition: transform 0.15s var(--ease), box-shadow 0.15s var(--ease);
+}
+.add:hover  { transform: translateY(-1px); box-shadow: 0 12px 26px rgba(124, 111, 234, 0.42); }
+.add:active { transform: translateY(0); }
+
+/* ---------------------------- history ---------------------------- */
+
+.history-group {
+  margin-bottom: 20px;
+}
+
+.history-group:last-child {
+  margin-bottom: 0;
+}
+
+.history-group-label {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-family: 'Sora', sans-serif;
+  font-weight: 700;
+  font-size: 0.7rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--ink-faint);
+  margin: 0 0 10px;
+}
+
+.history-group-label::before {
+  content: '';
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+}
+
+.history-group--income .history-group-label::before { background: var(--mint); }
+.history-group--expense .history-group-label::before { background: var(--rose); }
+
+.history-group--income .history > div > div { border-left: 3px solid var(--mint); }
+.history-group--expense .history > div > div { border-left: 3px solid var(--rose); }
+
+.edit,
+.delete {
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 0.82rem;
+  padding: 4px 6px;
+  border-radius: 50%;
+  line-height: 1;
+  opacity: 0.55;
+  transition: opacity 0.18s var(--ease), background 0.18s var(--ease), transform 0.18s var(--ease);
+}
+.edit:hover   { opacity: 1; background: var(--violet-bg); transform: scale(1.08); }
+.delete:hover { opacity: 1; background: var(--rose-bg);   transform: scale(1.08); }
+
+/* =============================== a11y & motion =============================== */
+
+:focus-visible {
+  outline: 2px solid var(--violet);
+  outline-offset: 2px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  * { animation: none !important; transition: none !important; }
+  body::before { animation: none; }
+}
+
+/* =============================== responsive =============================== */
+
+@media (max-width: 520px) {
+  section { padding: 26px 20px; border-radius: var(--radius-md); }
+  .amount { font-size: 2rem; }
+}
